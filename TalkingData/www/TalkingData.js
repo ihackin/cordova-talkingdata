@@ -1,42 +1,49 @@
+
+
+var exec = require('cordova/exec');
+
 var TalkingData = {
-    init:function(appKey, channelId) {
-        Cordova.exec(null, null, "TalkingData", "sessionStarted", [appKey, channelId]);
+    init: function (appKey, channelId) {
+        exec(null, null, "TalkingData", "sessionStarted", [appKey, channelId]);
     },
-    trackEvent:function(eventId) {
-        Cordova.exec(null, null, "TalkingData", "trackEvent", [eventId]);
+    trackEvent: function (eventId) {
+        exec(null, null, "TalkingData", "trackEvent", [eventId]);
     },
-    trackEventWithLabel:function(eventId, eventLabel) {
-        Cordova.exec(null, null, "TalkingData", "trackEventWithLabel", [eventId, eventLabel]);
+    trackEventWithLabel: function (eventId, eventLabel) {
+        exec(null, null, "TalkingData", "trackEventWithLabel", [eventId, eventLabel]);
     },
-    trackEventWithParameters:function(eventId, eventLabel, eventData) {
+    trackEventWithParameters: function (eventId, eventLabel, eventData) {
         var eventDataJson = JSON.stringify(eventData);
-        Cordova.exec(null, null, "TalkingData", "trackEventWithParameters", [eventId, eventLabel, eventDataJson]);
+        exec(null, null, "TalkingData", "trackEventWithParameters", [eventId, eventLabel, eventDataJson]);
     },
-    trackPage:function(pageName) {
-        Cordova.exec(null, null, "TalkingData", "trackPage", [pageName]);
+    trackPage: function (pageName) {
+        exec(null, null, "TalkingData", "trackPage", [pageName]);
     },
-    trackPageBegin:function(pageName) {
-        Cordova.exec(null, null, "TalkingData", "trackPageBegin", [pageName]);
+    trackPageBegin: function (pageName) {
+        exec(null, null, "TalkingData", "trackPageBegin", [pageName]);
     },
-    trackPageEnd:function(pageName) {
-        Cordova.exec(null, null, "TalkingData", "trackPageEnd", [pageName]);
+    trackPageEnd: function (pageName) {
+        exec(null, null, "TalkingData", "trackPageEnd", [pageName]);
     },
-    setLocation:function(latitude, longitude) {
-        Cordova.exec(null, null, "TalkingData", "setLocation", [latitude, longitude]);
+    setLocation: function (latitude, longitude) {
+        exec(null, null, "TalkingData", "setLocation", [latitude, longitude]);
     },
-    getDeviceId:function(callBack) {
-        Cordova.exec(callBack, null, "TalkingData", "getDeviceId", []);
+    getDeviceId: function (callBack) {
+        exec(callBack, null, "TalkingData", "getDeviceId", []);
     },
-    openDebugLog:function(enabled) {
-        Cordova.exec(null, null, "TalkingData", "openDebugLog", [enabled]);
+    openDebugLog: function (enabled) {
+        exec(null, null, "TalkingData", "openDebugLog", [enabled]);
     },
-    setExceptionReportEnabled:function(enabled) {
-        Cordova.exec(null, null, "TalkingData", "setExceptionReportEnabled", [enabled]);
+    setExceptionReportEnabled: function (enabled) {
+        exec(null, null, "TalkingData", "setExceptionReportEnabled", [enabled]);
     },
-    setSignalReportEnabled:function(enabled) {
-        Cordova.exec(null, null, "TalkingData", "setSignalReportEnabled", [enabled]);
+    setSignalReportEnabled: function (enabled) {
+        exec(null, null, "TalkingData", "setSignalReportEnabled", [enabled]);
     },
-    setLogEnabled:function(enabled) {
-        Cordova.exec(null, null, "TalkingData", "setLogEnabled", [enabled]);
+    setLogEnabled: function (enabled) {
+        exec(null, null, "TalkingData", "setLogEnabled", [enabled]);
     }
 };
+
+module.exports = TalkingData;
+
