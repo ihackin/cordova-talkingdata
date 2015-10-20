@@ -15,31 +15,32 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.tendcloud.tenddata.TCAgent;;
 
 public class TalkingDataPlugin extends CordovaPlugin {
-	Activity act;
-	Context ctx;
-	String currPageName;
+	private Activity mActivity;
+	private Context mAppContext;
+	private String mCurrPageName;
 	
 	@Override
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize(cordova, webView);
-		this.act = cordova.getActivity();
-		this.ctx = cordova.getActivity().getApplicationContext();
+		this.mActivity = cordova.getActivity();
+		this.mAppContext = cordova.getActivity().getApplicationContext();
 	}
 	
 	@Override
 	public void onResume(boolean multitasking) {
 		super.onResume(multitasking);
-		TCAgent.onResume(act);
+		TCAgent.onResume(mActivity);
 	}
 	
 	@Override
 	public void onPause(boolean multitasking) {
 		super.onPause(multitasking);
-		TCAgent.onPause(act);
+		TCAgent.onPause(mActivity);
 	}
 	
 	@Override
@@ -47,16 +48,16 @@ public class TalkingDataPlugin extends CordovaPlugin {
 		if (action.equals("sessionStarted")) {
 			String appKey = args.getString(0);
 			String channelId = args.getString(1);
-			TCAgent.init(ctx, appKey, channelId);
+			TCAgent.init(mAppContext, appKey, channelId);
 			return true;
 		} else if (action.equals("trackEvent")) {
 			String eventId = args.getString(0);
-			TCAgent.onEvent(ctx, eventId);
+			TCAgent.onEvent(mAppContext, eventId);
 			return true;
 		} else if (action.equals("trackEventWithLabel")) {
 			String eventId = args.getString(0);
 			String eventLabel = args.getString(1);
-			TCAgent.onEvent(ctx, eventId, eventLabel);
+			TCAgent.onEvent(mAppContext, eventId, eventLabel);
 			return true;
 		} else if (action.equals("trackEventWithParameters")) {
 			String eventId = args.getString(0);
@@ -64,29 +65,29 @@ public class TalkingDataPlugin extends CordovaPlugin {
 			String eventDataJson = args.getString(2);
 			if (eventDataJson != null) {
 				Map<String, Object> eventData = this.toMap(eventDataJson);
-				TCAgent.onEvent(ctx, eventId, eventLabel, eventData);
+				TCAgent.onEvent(mAppContext, eventId, eventLabel, eventData);
 			}
 			return true;
 		} else if (action.equals("trackPage")) {
 			String pageName = args.getString(0);
-			if (currPageName) {
-				TCAgent.onPageEnd(act, currPageName);
+			if (!TextUtils.isEmpty(mCurrPageName)) {
+				TCAgent.onPageEnd(mActivity, mCurrPageName);
 			}
-			currPageName = pageName;
-			TCAgent.onPageStart(act, pageName);
+			mCurrPageName = pageName;
+			TCAgent.onPageStart(mActivity, pageName);
 			return true;
 		} else if (action.equals("trackPageBegin")) {
 			String pageName = args.getString(0);
-			currPageName = pageName;
-			TCAgent.onPageStart(act, pageName);
+			mCurrPageName = pageName;
+			TCAgent.onPageStart(mActivity, pageName);
 			return true;
 		} else if (action.equals("trackPageEnd")) {
 			String pageName = args.getString(0);
-			currPageName = null;
-			TCAgent.onPageEnd(act, pageName);
+			mCurrPageName = null;
+			TCAgent.onPageEnd(mActivity, pageName);
 			return true;
 		} else if (action.equals("getDeviceId")) {
-			String deviceId = TCAgent.getDeviceId(ctx);
+			String deviceId = TCAgent.getDeviceId(mAppContext);
 			callbackContext.success(deviceId);
 			return true;
 		} else if (action.equals("setSignalReportEnabled")) {
@@ -120,3 +121,4 @@ public class TalkingDataPlugin extends CordovaPlugin {
 		return result;
 	}
 }
+
